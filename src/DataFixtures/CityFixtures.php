@@ -2,24 +2,26 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\City;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Faker\Factory;
 
-class CityFixtures extends Fixture implements DependentFixtureInterface
+class CityFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        // $product = new Product();
-        // $manager->persist($product);
+
+        $faker = Factory::create('fr_FR');
+
+        for ($i = 0; $i < 1000; $i++) {
+            $city = new City();
+            $city->setName( $faker->city );
+            $city->setZipcode( $faker->postcode );
+
+            $manager->persist($city);
+        }
 
         $manager->flush();
-    }
-
-    public function getDependencies()
-    {
-        return array(
-            CityFixtures::class,
-        );
     }
 }
